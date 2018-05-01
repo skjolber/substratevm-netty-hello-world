@@ -1,5 +1,7 @@
 package com.github.graal.netty;
 
+import java.nio.charset.StandardCharsets;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFactory;
@@ -17,9 +19,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public final class HelloWorld {
 
-	static final int PORT = 8080;
+	static final int PORT = 8081;
 
 	public static void main(String[] args) throws Exception {
+		
+		byte[] content = "Hello World\n".getBytes(StandardCharsets.UTF_8);
 		// Configure the server.
 		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -30,11 +34,10 @@ public final class HelloWorld {
 			.channelFactory(new ChannelFactory<ServerChannel>() {
 				@Override
 				public ServerChannel newChannel() {
-					System.out.println("New channel");
 					return new NioServerSocketChannel();
 				}
 			})
-			.childHandler(new HttpHelloWorldServerInitializer());
+			.childHandler(new HttpHelloWorldServerInitializer(content));
 
 			Channel ch = b.bind(PORT).sync().channel();
 

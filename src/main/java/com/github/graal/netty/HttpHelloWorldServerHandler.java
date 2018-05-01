@@ -15,9 +15,14 @@ import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpUtil;
 
-class HttpHelloWorldServerHandler extends ChannelInboundHandlerAdapter {
-	private static final byte[] CONTENT = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
-
+public class HttpHelloWorldServerHandler extends ChannelInboundHandlerAdapter {
+	
+	private final byte[] content;
+	
+	public HttpHelloWorldServerHandler(byte[] content) {
+		this.content = content;
+	}
+	
 	@Override
 	public void channelReadComplete(ChannelHandlerContext ctx) {
 		ctx.flush();
@@ -32,7 +37,7 @@ class HttpHelloWorldServerHandler extends ChannelInboundHandlerAdapter {
 				ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
 			}
 			boolean keepAlive = HttpUtil.isKeepAlive(req);
-			FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(CONTENT));
+			FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(content));
 			response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
 			response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
 
