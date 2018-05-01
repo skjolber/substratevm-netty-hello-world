@@ -1,4 +1,4 @@
-package com.github.graal.netty;
+package com.github.skjolber.graal.netty;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

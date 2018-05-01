@@ -18,11 +18,11 @@ Build this project using
 
 then compile the [SubstrateVM] native image using
 
-> native-image -cp ./target/substratevm-netty-hello-world-0.0.1-SNAPSHOT.jar com.github.graal.netty.HelloWorld -Dio.netty.noUnsafe=true -Djava.io.tmpdir=/tmp
+> native-image -cp ./target/substratevm-netty-hello-world-1.0.0-SNAPSHOT.jar com.github.skjolber.graal.netty.HelloWorld -Dio.netty.noUnsafe=true -Djava.io.tmpdir=/tmp
 
 Then run
 
-> ./com.github.graal.netty.HelloWorld
+> ./com.github.skjolber.graal.netty.HelloWorld
 
 and visit
 
@@ -30,8 +30,21 @@ http://localhost:8080
 
 and observe response 'Hello World'. 
 
-# History
+Start a comparable 'classic' instance using the command
 
+> java -XX:+UseG1GC -Dio.netty.noUnsafe=true -Djava.io.tmpdir=/tmp -jar target/substratevm-netty-hello-world-1.0.0-SNAPSHOT.jar 8081
+
+## Memory use
+Compare the (approximate) memory use of the two using the command
+
+> ps -eo size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; printf("%13.2f Mb ",hr) } { for ( x=4 ; x<=NF ; x++ ) { printf("%s ",$x) } print "" }' | grep 'helloworld\|hello-world'
+
+In this simple experiment, the SubstrateVM version seems to be using quite a lot less memory.
+
+## CPU use
+The CPU use seems to converge to approximately the same level. A more complex use-case would be better for measuring the differences, as this is mostly I/O-bound. 
+
+# History
  - 1.0.0: Initial version
 
 [Apache 2.0]:          	http://www.apache.org/licenses/LICENSE-2.0.html

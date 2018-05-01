@@ -1,4 +1,4 @@
-package com.github.graal.netty;
+package com.github.skjolber.graal.netty;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;

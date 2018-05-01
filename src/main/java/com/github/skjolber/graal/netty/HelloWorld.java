@@ -1,4 +1,4 @@
-package com.github.graal.netty;
+package com.github.skjolber.graal.netty;
 
 import java.nio.charset.StandardCharsets;
 
@@ -19,9 +19,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public final class HelloWorld {
 
-	static final int PORT = 8081;
-
 	public static void main(String[] args) throws Exception {
+		
+		int port = 8080;
+		if(args.length > 0) {
+			port = Integer.parseInt(args[0]);
+		}
 		
 		byte[] content = "Hello World\n".getBytes(StandardCharsets.UTF_8);
 		// Configure the server.
@@ -39,10 +42,10 @@ public final class HelloWorld {
 			})
 			.childHandler(new HttpHelloWorldServerInitializer(content));
 
-			Channel ch = b.bind(PORT).sync().channel();
+			Channel ch = b.bind(port).sync().channel();
 
 			System.err.println("Open your web browser and navigate to " +
-					("http") + "://127.0.0.1:" + PORT + '/');
+					("http") + "://127.0.0.1:" + port + '/');
 
 			ch.closeFuture().sync();
 		} finally {
