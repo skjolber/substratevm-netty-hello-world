@@ -22,7 +22,7 @@ then compile the [SubstrateVM] native image using
 
 Then run
 
-> ./com.github.skjolber.graal.netty.HelloWorld
+> ./com.github.skjolber.graal.netty.helloworld
 
 and visit
 
@@ -34,12 +34,13 @@ Start a comparable 'classic' instance using the command
 
 > java -XX:+UseG1GC -Dio.netty.noUnsafe=true -Djava.io.tmpdir=/tmp -jar target/substratevm-netty-hello-world-1.0.0-SNAPSHOT.jar 8081
 
+# Performance / benchmark
 ## Memory use
 Compare the (approximate) memory use of the two using the command
 
 > ps -eo size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; printf("%13.2f Mb ",hr) } { for ( x=4 ; x<=NF ; x++ ) { printf("%s ",$x) } print "" }' | grep 'helloworld\|hello-world'
 
-In this simple experiment, the SubstrateVM version seems to be using quite a lot less memory.
+In this simple experiment, the SubstrateVM version seems to be using quite a lot less memory, especially before seeing any HTTP traffic.
 
 ## CPU use
 The CPU use seems to converge to approximately the same level. A more complex use-case would be better for measuring the differences, as this is mostly I/O-bound. 
